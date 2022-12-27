@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { SharedModule } from './shared/shared.module';
 import configuration from './configuration/env-configuration';
 import validationSchema from './configuration/env-validation';
+import { MorganInterceptor, MorganModule } from 'nest-morgan';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -15,8 +17,12 @@ import validationSchema from './configuration/env-validation';
       validationSchema,
     }),
     SharedModule,
+    MorganModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: MorganInterceptor('combined') },
+  ],
 })
 export class AppModule {}

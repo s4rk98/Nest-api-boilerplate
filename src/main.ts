@@ -7,6 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get<ConfigService>(ConfigService);
   const logger = new CustomLoggerService('main');
+  app.useLogger(logger); // should be provided, so that the functions from CustomLoggerService can be called.
   const port = configService.get('configuration.port');
   const host = configService.get('configuration.host');
   const env = configService.get('configuration.env');
